@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:html_unescape/html_unescape.dart';
+import 'package:convert/convert.dart';
+// import 'package:collection/collection.dart';
 
 extension AppStringsExtention on String? {
 
@@ -139,5 +142,38 @@ extension AppStringsExtention on String? {
         .toString()
         .trim()
         .replaceAll('D', '');
+  }
+
+
+  bool get isJsonString {
+    try {
+      if (isNullOrEmpty) {
+        return false;
+      }
+      var data = json.decode(this ?? '');
+      if (data is Map) {
+        return true;
+      }
+      return false;
+    } on FormatException catch (_) {
+      // logger.e(error.message);
+      return false;
+    }
+  }
+
+  String? get plain {
+    if (isNullOrEmpty) {
+      return null;
+    }
+    var unescape = HtmlUnescape();
+    return unescape.convert(this!);
+    //return date;
+  }
+
+  DateTime? get fixToDateTime {
+    if (isNullOrEmpty) {
+      return null;
+    }
+    return FixedDateTimeFormatter('YYYYMMDD').decode(this!);
   }
 }
