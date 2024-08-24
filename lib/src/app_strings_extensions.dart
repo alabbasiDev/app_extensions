@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
-import 'app_date_time_extension.dart';
 
 extension AppStringsExtention on String? {
 
-  String get locale => intl.Intl.getCurrentLocale().split('_').first;
+  String get locale =>
+      intl.Intl
+          .getCurrentLocale()
+          .split('_')
+          .first;
 
   bool get isNullOrEmpty => this == null || this?.isEmpty == true;
 
@@ -28,21 +31,37 @@ extension AppStringsExtention on String? {
 // bool isNullEmptyZeroOrFalse() =>
 //     this == null || this == '' || !this || this == 0;
 
-  DateTime? get parseTimeFromStringToDateTime {
-    if (isNullOrEmpty) {
-      return null;
-    } else {
-      DateTime dateTime =
-          intl.DateFormat(apiTimeOfDayFormat, 'en').parse(this!);
-      return dateTime;
-    }
-  }
+  // DateTime? get parseTimeFromStringToDateTime {
+  //   if (isNullOrEmpty) {
+  //     return null;
+  //   } else {
+  //     DateTime dateTime =
+  //     intl.DateFormat(apiTimeOfDayFormat, 'en').parse(this!);
+  //     return dateTime;
+  //   }
+  // }
 
-  TimeOfDay? get toTimeOfDay {
+  // //TODO remove and palce it with 
+  // TimeOfDay? get toTimeOfDay {
+  //   if (isNotNullOrEmpty) {
+  //     return TimeOfDay.fromDateTime(
+  //       parseTimeFromStringToDateTime!,
+  //     );
+  //   }
+  //   return null;
+  // }
+
+  TimeOfDay? get from12hTo24hTimeOfDay {
     if (isNotNullOrEmpty) {
-      return TimeOfDay.fromDateTime(
-        parseTimeFromStringToDateTime!,
+      assert(this!.contains('AM') ||this!.contains('am') ||this!.contains('PM') ||this!.contains('pm'), 'must contain AM or PM');
+      bool withSeconds = this!.split(':').length == 3;
+
+      DateTime date2 = intl.DateFormat(withSeconds ? "hh:mm:ssa" : "hh:mma")
+          .parse(this!.replaceAll(' ', '')
+          .replaceAll('am', 'AM').replaceAll('pm', 'PM')
       );
+      // return TimeOfDay.fromDateTime(intl.DateFormat("HH:mm").format(date2));
+      return TimeOfDay.fromDateTime(date2);
     }
     return null;
   }

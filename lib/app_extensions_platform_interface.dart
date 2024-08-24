@@ -11,7 +11,6 @@ abstract class AppExtensionsPlatform extends PlatformInterface {
   static AppExtensionsPlatform _instance = MethodChannelAppExtensions();
 
   /// The default instance of [AppExtensionsPlatform] to use.
-  ///
   /// Defaults to [MethodChannelAppExtensions].
   static AppExtensionsPlatform get instance => _instance;
 
