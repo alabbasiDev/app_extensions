@@ -176,4 +176,5 @@ extension AppStringsExtention on String? {
     }
     return FixedDateTimeFormatter('YYYYMMDD').decode(this!);
   }
+
 }
