@@ -13,7 +13,7 @@ extension AppStringsExtention on String? {
           .split('_')
           .first;
 
-  bool get isNullOrEmpty => this == null || this?.isEmpty == true;
+  bool get isNullOrEmpty => this == null || this?.trim().isEmpty == true;
 
   bool get isNotNullOrEmpty => this != null && this!.isNotEmpty;
 
