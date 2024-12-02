@@ -9,3 +9,4 @@ export 'package:app_extensions/src/app_time_of_day_extension.dart';
 export 'package:app_extensions/src/app_widget_extensions.dart';
 export 'package:app_extensions/src/text_style_extensions.dart';
 export 'package:app_extensions/src/app_map_extensions.dart';
+export 'package:app_extensions/src/app_context_extension.dart';
