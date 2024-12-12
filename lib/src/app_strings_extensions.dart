@@ -6,12 +6,7 @@ import 'package:convert/convert.dart';
 // import 'package:collection/collection.dart';
 
 extension AppStringsExtention on String? {
-
-  String get locale =>
-      intl.Intl
-          .getCurrentLocale()
-          .split('_')
-          .first;
+  String get locale => intl.Intl.getCurrentLocale().split('_').first;
 
   bool get isNullOrEmpty => this == null || this?.trim().isEmpty == true;
 
@@ -44,7 +39,7 @@ extension AppStringsExtention on String? {
   //   }
   // }
 
-  // //TODO remove and palce it with 
+  // //TODO remove and palce it with
   // TimeOfDay? get toTimeOfDay {
   //   if (isNotNullOrEmpty) {
   //     return TimeOfDay.fromDateTime(
@@ -56,13 +51,19 @@ extension AppStringsExtention on String? {
 
   TimeOfDay? get from12hTo24hTimeOfDay {
     if (isNotNullOrEmpty) {
-      assert(this!.contains('AM') ||this!.contains('am') ||this!.contains('PM') ||this!.contains('pm'), 'must contain AM or PM');
+      assert(
+          this!.contains('AM') ||
+              this!.contains('am') ||
+              this!.contains('PM') ||
+              this!.contains('pm'),
+          'must contain AM or PM');
       bool withSeconds = this!.split(':').length == 3;
 
       DateTime date2 = intl.DateFormat(withSeconds ? "hh:mm:ssa" : "hh:mma")
-          .parse(this!.replaceAll(' ', '')
-          .replaceAll('am', 'AM').replaceAll('pm', 'PM')
-      );
+          .parse(this!
+              .replaceAll(' ', '')
+              .replaceAll('am', 'AM')
+              .replaceAll('pm', 'PM'));
       // return TimeOfDay.fromDateTime(intl.DateFormat("HH:mm").format(date2));
       return TimeOfDay.fromDateTime(date2);
     }
@@ -90,8 +91,7 @@ extension AppStringsExtention on String? {
       isRtl = intl.Bidi.detectRtlDirectionality(this!);
     } else {
       isRtl = intl.Bidi.isRtlLanguage(
-        locale
-        /*Localizations.localeOf(Get.context!).languageCode*/,
+        locale /*Localizations.localeOf(Get.context!).languageCode*/,
       );
     }
     // if (opposite) {
@@ -105,10 +105,9 @@ extension AppStringsExtention on String? {
     if (this != null) {
       isRtl = intl.Bidi.detectRtlDirectionality(this!);
     } else {
-      isRtl = intl.Bidi.isRtlLanguage(
-          locale
-        // Localizations.localeOf(Get.context!).languageCode,
-      );
+      isRtl = intl.Bidi.isRtlLanguage(locale
+          // Localizations.localeOf(Get.context!).languageCode,
+          );
     }
     return !isRtl ? TextDirection.rtl : TextDirection.ltr;
   }
@@ -144,7 +143,6 @@ extension AppStringsExtention on String? {
         .replaceAll('D', '');
   }
 
-
   bool get isJsonString {
     try {
       if (isNullOrEmpty) {
@@ -177,4 +175,29 @@ extension AppStringsExtention on String? {
     return FixedDateTimeFormatter('YYYYMMDD').decode(this!);
   }
 
+  String? addImageBaseUrl(String baseUrl) {
+    // logger.d(this);
+    if (isNullOrEmpty) {
+      return null;
+    }
+
+    if (this!.startsWith('http') || this!.startsWith('https')) {
+      return this;
+    }
+
+    String imageBaseUrl = baseUrl.trim().endsWith('/')
+        ? baseUrl.trim().substring(0, baseUrl.length - 1).trim()
+        : baseUrl.trim();
+
+    String imagePath = this!.trim();
+
+    if (imagePath.startsWith('/')) {
+      imagePath = imagePath.substring(1);
+    }
+
+    final String encodedUrl = Uri.encodeFull('$imageBaseUrl/$imagePath');
+    // logger.d(encodedUrl);
+
+    return encodedUrl;
+  }
 }
