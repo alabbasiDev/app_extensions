@@ -1,4 +1,4 @@
-library app_extensions;
+// library app_extensions;
 
 export 'package:app_extensions/src/app_color_extension.dart';
 export 'package:app_extensions/src/app_date_time_extension.dart';
