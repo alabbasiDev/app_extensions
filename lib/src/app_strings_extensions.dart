@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:html_unescape/html_unescape.dart';
 import 'package:convert/convert.dart';
+
+import 'ge_utils.dart';
 // import 'package:collection/collection.dart';
 
 extension AppStringsExtention on String? {
@@ -199,5 +201,29 @@ extension AppStringsExtention on String? {
     // logger.d(encodedUrl);
 
     return encodedUrl;
+  }
+
+  //
+
+  String? get toCamelCase {
+    if (isNullOrEmpty) return null;
+
+    // Split the string into words based on spaces or underscores
+    final words = this!.split(RegExp(r'[\s_]+'));
+
+    // Convert the first word to lowercase and capitalize the first letter of the remaining words
+    final camelCaseString = words
+        .asMap()
+        .map((index, word) {
+          final lowerCased = word.toLowerCase();
+          final transformedWord = index == 0
+              ? lowerCased
+              : '${lowerCased[0].toUpperCase()}${lowerCased.substring(1)}';
+          return MapEntry(index, transformedWord);
+        })
+        .values
+        .join();
+
+    return camelCaseString;
   }
 }
