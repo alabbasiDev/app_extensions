@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:mime/mime.dart';
 import 'package:app_extensions/src/app_strings_extensions.dart';
 import 'package:path/path.dart' as path;
 
@@ -36,4 +36,6 @@ extension FilePathExtensions on String {
     Uint8List bytes = base64.decode(this);
     return File.fromRawPath(bytes);
   }
+
+  String? get getFileMimeType => lookupMimeType(this);
 }
