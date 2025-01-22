@@ -14,18 +14,6 @@ extension AppStringsExtention on String? {
 
   bool get isNotNullOrEmpty => this != null && this!.isNotEmpty;
 
-  bool get isBase64 {
-    if (isNullOrEmpty) {
-      return false;
-    }
-    try {
-      base64.decode(this!);
-      return true;
-    } on FormatException {
-      return false;
-    }
-  }
-
 // bool isNullEmptyOrFalse() => this == null || this == '' || !this;
 
 // bool isNullEmptyZeroOrFalse() =>
