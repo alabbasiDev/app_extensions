@@ -22,7 +22,7 @@ extension FilePathExtensions on String {
 
   // String get getFileDirectoryName => path.dirname(this);
 
-  String getFileExtension([int level = 1]) => path.extension(this);
+  String getFileExtension([int level = 1]) => path.extension(this, level);
 
   Future<String> get encodeFileToBase64 async {
     final Uint8List bytes = await File(this).readAsBytes();
