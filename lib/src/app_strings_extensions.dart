@@ -1,24 +1,40 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:html_unescape/html_unescape.dart';
 import 'package:convert/convert.dart';
-
-import 'ge_utils.dart';
-// import 'package:collection/collection.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 extension AppStringsExtention on String? {
   String get locale => intl.Intl.getCurrentLocale().split('_').first;
 
   bool get isNullOrEmpty => this == null || this?.trim().isEmpty == true;
 
-  bool get isNotNullOrEmpty => this != null && this!.isNotEmpty;
+  bool get isNotNullOrEmpty => this != null && this!.trim().isNotEmpty;
 
-// bool isNullEmptyOrFalse() => this == null || this == '' || !this;
+  Future<void> copyToClipBoard(String message) async {
+    if (isNullOrEmpty) return;
+    await Clipboard.setData(ClipboardData(text: this!));
+    message.toastMessage();
+  }
 
-// bool isNullEmptyZeroOrFalse() =>
-//     this == null || this == '' || !this || this == 0;
+  toastMessage({
+    Color? backgroundColor,
+    Color? textColor,
+  }) {
+    if (isNullOrEmpty) return;
+    Fluttertoast.showToast(
+      msg: this!,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: backgroundColor ?? Colors.black,
+      textColor: textColor ?? Colors.white,
+      fontSize: 16.0,
+    );
+  }
 
+  //region Date and Time
   // DateTime? get parseTimeFromStringToDateTime {
   //   if (isNullOrEmpty) {
   //     return null;
@@ -38,6 +54,13 @@ extension AppStringsExtention on String? {
   //   }
   //   return null;
   // }
+
+  DateTime? get fixToDateTime {
+    if (isNullOrEmpty) {
+      return null;
+    }
+    return FixedDateTimeFormatter('YYYYMMDD').decode(this!);
+  }
 
   TimeOfDay? get from12hTo24hTimeOfDay {
     if (isNotNullOrEmpty) {
@@ -60,21 +83,11 @@ extension AppStringsExtention on String? {
     return null;
   }
 
-  String? get timeOfDayToApi => isNullOrEmpty ? null : '$this:00';
+  // String? get timeOfDayToApi => isNullOrEmpty ? null : '$this:00';
 
-  Color? get toColor {
-    if (isNullOrEmpty) {
-      return null;
-    }
+  //endregion
 
-    var hexColor = this!.replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor";
-    }
-
-    return Color(int.parse("0x$hexColor"));
-  }
-
+  //region text direction
   TextDirection get getTextDirection {
     bool isRtl;
     if (this != null) {
@@ -102,6 +115,22 @@ extension AppStringsExtention on String? {
     return !isRtl ? TextDirection.rtl : TextDirection.ltr;
   }
 
+  //endregion
+
+  //region Color
+  Color? get toColor {
+    if (isNullOrEmpty) {
+      return null;
+    }
+
+    var hexColor = this!.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor";
+    }
+
+    return Color(int.parse("0x$hexColor"));
+  }
+
   bool get isHex {
     if (isNullOrEmpty) {
       return false;
@@ -110,6 +139,8 @@ extension AppStringsExtention on String? {
     // /^#?([a-f0-9]{6}|[a-f0-9]{3})$/
     return RegExp(r'^[0-9a-fA-F]+$').hasMatch(this!);
   }
+
+  //endregion
 
   String? get flagEmoji {
     if (isNullOrEmpty) {
@@ -158,13 +189,6 @@ extension AppStringsExtention on String? {
     //return date;
   }
 
-  DateTime? get fixToDateTime {
-    if (isNullOrEmpty) {
-      return null;
-    }
-    return FixedDateTimeFormatter('YYYYMMDD').decode(this!);
-  }
-
   String? addImageBaseUrl(String baseUrl) {
     // logger.d(this);
     if (isNullOrEmpty) {
@@ -189,29 +213,5 @@ extension AppStringsExtention on String? {
     // logger.d(encodedUrl);
 
     return encodedUrl;
-  }
-
-  //
-
-  String? get toCamelCase {
-    if (isNullOrEmpty) return null;
-
-    // Split the string into words based on spaces or underscores
-    final words = this!.split(RegExp(r'[\s_]+'));
-
-    // Convert the first word to lowercase and capitalize the first letter of the remaining words
-    final camelCaseString = words
-        .asMap()
-        .map((index, word) {
-          final lowerCased = word.toLowerCase();
-          final transformedWord = index == 0
-              ? lowerCased
-              : '${lowerCased[0].toUpperCase()}${lowerCased.substring(1)}';
-          return MapEntry(index, transformedWord);
-        })
-        .values
-        .join();
-
-    return camelCaseString;
   }
 }

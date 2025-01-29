@@ -1,4 +1,6 @@
 
+import 'package:app_extensions/app_extensions.dart';
+
 import 'ge_utils.dart';
 
 extension GetStringUtils on String {
@@ -77,6 +79,28 @@ extension GetStringUtils on String {
   String get removeAllWhitespace => GetUtils.removeAllWhitespace(this);
 
   String? get camelCase => GetUtils.camelCase(this);
+
+  String? get toCamelCase {
+    if (isNullOrEmpty) return null;
+
+    // Split the string into words based on spaces or underscores
+    final words = split(RegExp(r'[\s_]+'));
+
+    // Convert the first word to lowercase and capitalize the first letter of the remaining words
+    final camelCaseString = words
+        .asMap()
+        .map((index, word) {
+      final lowerCased = word.toLowerCase();
+      final transformedWord = index == 0
+          ? lowerCased
+          : '${lowerCased[0].toUpperCase()}${lowerCased.substring(1)}';
+      return MapEntry(index, transformedWord);
+    })
+        .values
+        .join();
+
+    return camelCaseString;
+  }
 
   String? get paramCase => GetUtils.paramCase(this);
 
