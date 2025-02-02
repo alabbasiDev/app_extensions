@@ -24,7 +24,10 @@ extension FilePathExtensions on String {
 
   String getFileExtension([int level = 1]) => path.extension(this, level);
 
-  Future<String> get encodeFileToBase64 async {
+  Future<String?> get encodeFileToBase64 async {
+    if(await File(this).exists() == false){
+      return null;
+    }
     final Uint8List bytes = await File(this).readAsBytes();
     return base64Encode(bytes);
   }
