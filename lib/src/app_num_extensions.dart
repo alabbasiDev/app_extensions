@@ -12,25 +12,27 @@ extension NumExtension on num? {
   }
 
   String? get formatNumbersWithSeparators {
-    if (this == null) {
-      return null;
-    }
+    if (this == null) return null;
+
     var formatter = NumberFormat('###,###,###');
     return formatter.format(this);
   }
 
-  String amountWithCurrency(double amount, String currency,
-          {int? decimalDigits}) =>
-      NumberFormat.currency(
-        name: currency,
-        decimalDigits: decimalDigits,
-      ).format(amount);
+  String? amountWithCurrency({required String currency, int? decimalDigits}) {
+    if (this == null) return null;
+    return NumberFormat.currency(
+      name: currency,
+      decimalDigits: decimalDigits,
+    ).format(this);
+  }
 
-  static String formatDoubleNumberDecimal(double? v) {
-    if (v == null) return '';
+  String? get formatDoubleNumberDecimal {
+    if (this == null) return null;
+
+    double? value = this?.toDouble();
     NumberFormat formatter = NumberFormat();
     formatter.minimumFractionDigits = 0;
     formatter.maximumFractionDigits = 2;
-    return formatter.format(v);
+    return formatter.format(value);
   }
 }
