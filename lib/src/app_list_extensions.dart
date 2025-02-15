@@ -8,7 +8,7 @@ extension ListExtension<T> on List<T>? {
     return condition ? this?.reversed.toList() : this;
   }
 
-  List<List<T>>? splitList(int chunkSize) {
+  List<List<T>>? splitListIntoLists(int chunkSize) {
     if (isNullOrEmpty) {
       return null;
     }

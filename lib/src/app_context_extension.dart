@@ -11,7 +11,6 @@ extension AppContextExtension on BuildContext {
   }
 }
 
-
 extension ContextExtensionss on BuildContext {
   /// The same of [MediaQuery.of(context).size]
   Size get mediaQuerySize => MediaQuery.of(this).size;
@@ -37,7 +36,7 @@ extension ContextExtensionss on BuildContext {
   /// if you for example want 46% of the height, then you reduce it by 56%.
   double heightTransformer({double dividedBy = 1, double reducedBy = 0.0}) {
     return (mediaQuerySize.height -
-        ((mediaQuerySize.height / 100) * reducedBy)) /
+            ((mediaQuerySize.height / 100) * reducedBy)) /
         dividedBy;
   }
 
@@ -121,6 +120,8 @@ extension ContextExtensionss on BuildContext {
 
   /// True if the current device is Tablet
   bool get isTablet => isSmallTablet || isLargeTablet;
+
+  bool get isRTL => Directionality.of(this) == TextDirection.rtl;
 
   /// Returns a specific value according to the screen size
   /// if the device width is higher than or equal to 1200 return

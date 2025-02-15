@@ -6,6 +6,4 @@ extension UriExtensions on Uri {
     }
     return baseUrl;
   }
-
-
 }

@@ -1,3 +1,4 @@
+import 'package:app_extensions/app_extensions.dart';
 import 'package:collection/collection.dart';
 
 /// A map from case-insensitive strings to values.
@@ -64,4 +65,94 @@ extension ConvertMapToStringCookie on Map<String, dynamic> {
 
   Map<String, dynamic> get toParamCaseInsensitiveMap =>
       CaseInsensitiveMap.fromParamCase(this);
+}
+
+extension MapExtension on Map<String, dynamic> {
+  void get removeNullValues {
+    removeWhere((key, value) {
+      if (value is String) {
+        return value.isNullOrEmpty;
+      }
+      if (value is List) {
+        return value.isNullOrEmpty;
+      }
+      return value == null;
+    });
+  }
+}
+
+extension DeepSearchMap on Map<String, dynamic>? {
+  // Helper function for key existence check
+  bool deepContainsKey(String targetKey) {
+    if (this == null || this!.isEmpty) return false;
+
+    Map data = this!;
+    if (data.containsKey(targetKey)) {
+      return true;
+    }
+    for (final value in data.values) {
+      // If the value is a map, check it recursively
+      if (value.deepContainsKey(targetKey)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Helper function for value retrieval
+  dynamic deepSearchValue(String targetKey) {
+    if (this == null) return null;
+    Map data = this!;
+    if (data.containsKey(targetKey)) {
+      return data[targetKey];
+    }
+    for (final value in data.values) {
+      // check it recursively
+      if (value is Map<String, dynamic>) {
+        final result = value.deepSearchValue(targetKey);
+        if (result != null) return result;
+      } else if (value is List<Map<String, dynamic>>) {
+        final result = value.deepSearchValue(targetKey);
+        if (result != null) return result;
+      }
+    }
+    return null;
+  }
+
+  /// Returns the value of the first key found in [keysToSearch]
+  dynamic firstKeyValueOrNull(List<String> keysToSearch) {
+    for (final key in keysToSearch) {
+      final value = deepSearchValue(key);
+      if (value != null) return value;
+    }
+    return null;
+  }
+}
+
+extension DeepSearchOnList on List<Map<String, dynamic>>? {
+  // Helper function for key existence check
+  bool deepContainsKey(String targetKey) {
+    if (isNullOrEmpty) return false;
+
+    List<Map<String, dynamic>> data = this!;
+    for (final item in data) {
+      if (item.deepContainsKey(targetKey)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Helper function for value retrieval
+  dynamic deepSearchValue(String targetKey) {
+    if (this == null) return null;
+    List<Map<String, dynamic>> data = this!;
+
+    for (final Map<String, dynamic> item in data) {
+      final result = item.deepSearchValue(targetKey);
+      if (result != null) return result;
+    }
+    return null;
+  }
 }
