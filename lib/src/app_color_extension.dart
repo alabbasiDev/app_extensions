@@ -38,6 +38,22 @@ extension AppColorExtension on Color {
     return computeLuminance() > 0.5 ? Colors.black : Colors.white;
   }
 
+
+  /// Returns a lighter variant of the given [color] by increasing its lightness.
+  /// The [amount] parameter controls how much to lighten the color (default is 10%).
+  Color lighten([double amount = 0.1]) {
+    assert(amount >= 0 && amount <= 1, 'Amount must be between 0 and 1');
+
+    // Convert the color to HSL.
+    final hslColor = HSLColor.fromColor(this);
+
+    // Increase the lightness by the given amount and clamp it between 0 and 1.
+    final double newLightness = (hslColor.lightness + amount).clamp(0.0, 1.0);
+
+    // Return the new color with the increased lightness.
+    return hslColor.withLightness(newLightness).toColor();
+  }
+
   /// Returns a darker variant of the given [color] by reducing its lightness.
   /// The [amount] parameter defines how much to darken the color (default is 10%).
   Color darken([double amount = 0.1]) {
