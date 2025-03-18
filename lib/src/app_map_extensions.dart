@@ -1,3 +1,5 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 import 'package:app_extensions/app_extensions.dart';
 import 'package:collection/collection.dart';
 
@@ -154,5 +156,29 @@ extension DeepSearchOnList on List<Map<String, dynamic>>? {
       if (result != null) return result;
     }
     return null;
+  }
+}
+
+typedef Condition = bool Function();
+
+extension MapExtension2<K, V> on Map<K, V> {
+  void addIf(Condition condition, K key, V value) {
+    if (condition is bool && condition.call()) {
+      this[key] = value;
+    }
+  }
+
+  void addAllIf(Condition condition, Map<K, V> values) {
+    if (condition is bool && condition.call()) addAll(values);
+  }
+
+  void assign(K key, V val) {
+    clear();
+    this[key] = val;
+  }
+
+  void assignAll(Map<K, V> val) {
+    clear();
+    addAll(val);
   }
 }
