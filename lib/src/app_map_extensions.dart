@@ -159,17 +159,16 @@ extension DeepSearchOnList on List<Map<String, dynamic>>? {
   }
 }
 
-typedef Condition = bool Function();
 
 extension MapExtension2<K, V> on Map<K, V> {
-  void addIf(Condition condition, K key, V value) {
-    if (condition is bool && condition.call()) {
+  void addIf(bool condition, K key, V value) {
+    if (condition.call()) {
       this[key] = value;
     }
   }
 
-  void addAllIf(Condition condition, Map<K, V> values) {
-    if (condition is bool && condition.call()) addAll(values);
+  void addAllIf(bool condition, Map<K, V> values) {
+    if ( condition) addAll(values);
   }
 
   void assign(K key, V val) {
