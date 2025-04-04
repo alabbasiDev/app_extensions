@@ -25,7 +25,7 @@ extension FilePathExtensions on String {
   String getFileExtension([int level = 1]) => path.extension(this, level);
 
   Future<String?> get encodeFileToBase64 async {
-    if(await File(this).exists() == false){
+    if (await File(this).exists() == false) {
       return null;
     }
     final Uint8List bytes = await File(this).readAsBytes();
@@ -41,4 +41,13 @@ extension FilePathExtensions on String {
   }
 
   String? get getFileMimeType => lookupMimeType(this);
+
+  Future<bool> get isValidFilePath async {
+    try {
+      final file = File(this);
+      return await file.exists();
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -15,3 +15,4 @@ export 'package:app_extensions/src/file_path_extensions.dart';
 export 'package:app_extensions/src/edgeinsets_directional_extensions.dart';
 export 'package:app_extensions/src/app_uri_extensions.dart';
 export 'package:app_extensions/src/app_num_extensions.dart';
+// export 'package:app_extensions/src/string_extensions.dart';
