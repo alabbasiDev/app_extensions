@@ -39,8 +39,9 @@ extension AppColorExtension on Color {
   /// Returns a lighter variant of the given [color] by increasing its lightness.
   /// The [amount] parameter controls how much to lighten the color (default is 10%).
   Color lighten([double amount = 0.1]) {
-    amount = (amount/10).clamp(0.0, 1.0);
-
+    if (amount > 1) {
+      amount = (amount / 10).clamp(0.0, 1.0);
+    }
     assert(amount >= 0 && amount <= 1, 'Amount must be between 0 and 1');
 
     // Convert the color to HSL.
@@ -56,9 +57,9 @@ extension AppColorExtension on Color {
   /// Returns a darker variant of the given [color] by reducing its lightness.
   /// The [amount] parameter defines how much to darken the color (default is 10%).
   Color darken([double amount = 0.1]) {
-
-    amount = (amount/10).clamp(0.0, 1.0);
-
+    if (amount > 1) {
+      amount = (amount / 10).clamp(0.0, 1.0);
+    }
     assert(amount >= 0 && amount <= 1, 'Amount must be between 0 and 1');
 
     // Convert the color to HSL
@@ -80,7 +81,9 @@ extension AppColorExtension on Color {
   /// - Increases saturation slightly (up to a factor of burnFactor * 0.5).
   /// - Shifts the hue toward warmer tones (subtracting burnFactor * 30 degrees).
   Color burnEffect([double burnFactor = 0.2]) {
-    burnFactor = (burnFactor/10).clamp(0.0, 1.0);
+    if (burnFactor > 1) {
+      burnFactor = (burnFactor / 10).clamp(0.0, 1.0);
+    }
 
     assert(burnFactor >= 0 && burnFactor <= 1,
         'burnFactor must be between 0 and 1');
