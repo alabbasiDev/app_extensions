@@ -170,10 +170,7 @@ extension AppStringsExtention on String? {
         return false;
       }
       var data = json.decode(this ?? '');
-      if (data is Map) {
-        return true;
-      }
-      return false;
+      return true;
     } on FormatException catch (_) {
       // logger.e(error.message);
       return false;
