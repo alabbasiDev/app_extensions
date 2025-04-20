@@ -1,10 +1,11 @@
 import 'dart:convert';
+
+import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:html_unescape/html_unescape.dart';
-import 'package:convert/convert.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:html_unescape/html_unescape.dart';
+import 'package:intl/intl.dart' as intl;
 
 extension AppStringsExtention on String? {
   String get locale => intl.Intl.getCurrentLocale().split('_').first;
@@ -22,15 +23,18 @@ extension AppStringsExtention on String? {
   toastMessage({
     Color? backgroundColor,
     Color? textColor,
+    ToastGravity? gravity,
+    double? fontSize,
+    Toast? toastLength,
   }) {
     if (isNullOrEmpty) return;
     Fluttertoast.showToast(
       msg: this!,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
+      toastLength: toastLength ?? Toast.LENGTH_SHORT,
+      gravity: gravity ?? ToastGravity.BOTTOM,
       backgroundColor: backgroundColor ?? Colors.black,
       textColor: textColor ?? Colors.white,
-      fontSize: 16.0,
+      fontSize: fontSize ?? 16.0,
     );
   }
 
