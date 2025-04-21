@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
 import 'package:app_extensions/src/app_strings_extensions.dart';
 import 'package:path/path.dart' as path;
@@ -25,7 +26,12 @@ extension FilePathExtensions on String {
   String getFileExtension([int level = 1]) => path.extension(this, level);
 
   Future<String?> get encodeFileToBase64 async {
-    if (await File(this).exists() == false) {
+
+    if(isUint8List){
+      return  base64Encode(toUint8List!);
+    }
+
+    if (await isValidFilePath == false) {
       return null;
     }
     final Uint8List bytes = await File(this).readAsBytes();
@@ -50,4 +56,19 @@ extension FilePathExtensions on String {
       return false;
     }
   }
+
+  Uint8List? get toUint8List =>
+      isNullOrEmpty ? null : Uint8List.fromList(this!.codeUnits);
+
+  bool get isUint8List {
+    if (isNullOrEmpty) return false;
+    try {
+      toUint8List;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
+
+
