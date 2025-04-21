@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+
+import 'package:app_extensions/src/app_strings_extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
-import 'package:app_extensions/src/app_strings_extensions.dart';
 import 'package:path/path.dart' as path;
 
 extension FilePathExtensions on String {
@@ -23,12 +24,17 @@ extension FilePathExtensions on String {
 
   // String get getFileDirectoryName => path.dirname(this);
 
-  String getFileExtension([int level = 1]) => path.extension(this, level);
+  String? getFileExtension([int level = 1]) {
+    if (isUint8List) {
+      return extensionFromMime(getFileMimeType ?? '');
+    }
+
+    return path.extension(this, level);
+  }
 
   Future<String?> get encodeFileToBase64 async {
-
-    if(isUint8List){
-      return  base64Encode(toUint8List!);
+    if (isUint8List) {
+      return base64Encode(toUint8List!);
     }
 
     if (await isValidFilePath == false) {
@@ -46,7 +52,12 @@ extension FilePathExtensions on String {
     return File.fromRawPath(bytes);
   }
 
-  String? get getFileMimeType => lookupMimeType(this);
+  String? get getFileMimeType {
+    if (isUint8List) {
+      return lookupMimeType('', headerBytes: toUint8List);
+    }
+    return lookupMimeType(this);
+  }
 
   Future<bool> get isValidFilePath async {
     try {
@@ -70,5 +81,3 @@ extension FilePathExtensions on String {
     }
   }
 }
-
-
