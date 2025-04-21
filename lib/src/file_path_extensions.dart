@@ -20,7 +20,15 @@ extension FilePathExtensions on String {
     }
   }
 
-  String get getFileName => path.basename(this);
+  String? getFileName({bool addUniqueTimeStampIfNull = false}) {
+    if (isUint8List || isBase64) {
+      return addUniqueTimeStampIfNull
+          ? DateTime.now().millisecondsSinceEpoch.toString()
+          : null;
+    }
+
+    return path.basename(this);
+  }
 
   // String get getFileDirectoryName => path.dirname(this);
 
