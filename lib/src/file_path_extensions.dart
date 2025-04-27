@@ -59,6 +59,18 @@ extension FilePathExtensions on String {
     return File.fromRawPath(bytes);
   }
 
+  Future<Uint8List?> get toBytes async {
+    if (isNullOrEmpty) return null;
+
+    if (isBase64) {
+      return base64.decode(this);
+    }
+    if (await isValidFilePath) {
+      return File(this).readAsBytesSync();
+    }
+    return null;
+  }
+
   String? get getFileMimeType {
     if (isBase64) {
       Uint8List bytes = base64.decode(this);
