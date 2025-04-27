@@ -9,9 +9,7 @@ import 'package:path/path.dart' as path;
 
 extension FilePathExtensions on String {
   bool get isBase64 {
-    if (isNullOrEmpty) {
-      return false;
-    }
+    if (isNullOrEmpty) return false;
     try {
       base64.decode(this);
       return true;
@@ -82,7 +80,8 @@ extension FilePathExtensions on String {
   bool get isUint8List {
     if (isNullOrEmpty) return false;
     try {
-      toUint8List;
+      // Attempt to decode as Base64
+      base64.decode(this);
       return true;
     } catch (e) {
       return false;
