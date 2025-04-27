@@ -19,7 +19,7 @@ extension FilePathExtensions on String {
   }
 
   String? getFileName({bool addUniqueTimeStampIfNull = false}) {
-    if (isUint8List || isBase64) {
+    if (isBase64) {
       return addUniqueTimeStampIfNull
           ? DateTime.now().millisecondsSinceEpoch.toString()
           : null;
@@ -31,7 +31,7 @@ extension FilePathExtensions on String {
   // String get getFileDirectoryName => path.dirname(this);
 
   String? getFileExtension([int level = 1]) {
-    if (isUint8List) {
+    if (isBase64) {
       return extensionFromMime(getFileMimeType ?? '');
     }
 
@@ -39,13 +39,14 @@ extension FilePathExtensions on String {
   }
 
   Future<String?> get encodeFileToBase64 async {
-    if (isUint8List) {
-      return base64Encode(toUint8List!);
+    if (isBase64) {
+      return this;
     }
 
     if (await isValidFilePath == false) {
       return null;
     }
+
     final Uint8List bytes = await File(this).readAsBytes();
     return base64Encode(bytes);
   }
@@ -59,8 +60,9 @@ extension FilePathExtensions on String {
   }
 
   String? get getFileMimeType {
-    if (isUint8List) {
-      return lookupMimeType('', headerBytes: toUint8List);
+    if (isBase64) {
+      Uint8List bytes = base64.decode(this);
+      return lookupMimeType('', headerBytes: bytes);
     }
     return lookupMimeType(this);
   }
@@ -69,20 +71,6 @@ extension FilePathExtensions on String {
     try {
       final file = File(this);
       return await file.exists();
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Uint8List? get toUint8List =>
-      isNullOrEmpty ? null : Uint8List.fromList(this!.codeUnits);
-
-  bool get isUint8List {
-    if (isNullOrEmpty) return false;
-    try {
-      // Attempt to decode as Base64
-      base64.decode(this);
-      return true;
     } catch (e) {
       return false;
     }
