@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:convert/convert.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -123,25 +124,48 @@ extension AppStringsExtention on String? {
 
   //region Color
   Color? get toColor {
-    if (isNullOrEmpty) {
+    try {
+      if (isNullOrEmpty || !isHexColor) {
+        return null;
+      }
+
+      // Remove all '#' characters
+      String hex = this!.replaceAll('#', '');
+
+      // Handle shorthand formats (3 or 4 characters)
+      if (hex.length == 3 || hex.length == 4) {
+        hex = hex.split('').map((char) => char + char).join();
+      }
+
+      // Add alpha channel if missing (6 characters → 8 with FF alpha)
+      if (hex.length == 6) {
+        hex = 'FF$hex';
+      }
+
+      // Parse hex to integer and create Color
+      return Color(int.parse(hex, radix: 16));
+    } catch (e) {
+      if (kDebugMode) {
+        print('====> Error in converting string toColor $e <===');
+      }
       return null;
     }
-
-    var hexColor = this!.replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor";
-    }
-
-    return Color(int.parse("0x$hexColor"));
   }
 
-  bool get isHex {
+  bool get isHexColor {
     if (isNullOrEmpty) {
       return false;
     }
-    // check if this regex = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
-    // /^#?([a-f0-9]{6}|[a-f0-9]{3})$/
-    return RegExp(r'^[0-9a-fA-F]+$').hasMatch(this!);
+
+    final trimmedInput = this!.trim();
+
+    // Regular expression to validate hex color formats:
+    // - Optional # followed by 3, 4, 6, or 8 hex digits
+    final hexColorRegex = RegExp(
+      r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$',
+    );
+
+    return hexColorRegex.hasMatch(trimmedInput);
   }
 
   //endregion
