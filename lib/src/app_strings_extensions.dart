@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart' as intl;
+import 'dart:math';
 
 extension AppStringsExtention on String? {
   String get locale => intl.Intl.getCurrentLocale().split('_').first;
@@ -238,5 +239,28 @@ extension AppStringsExtention on String? {
     // logger.d(encodedUrl);
 
     return encodedUrl;
+  }
+
+  // Usage:
+  // print(parseFormattedBytes('2.5 GB')); //=>  2684354560
+  int get parseFormattedBytes {
+
+    if (isNullOrEmpty) return 0;
+
+    String formattedString = this!.trim();
+    final regExp = RegExp(r'^([\d.]+)\s?([A-Za-z]+)$');
+    final match = regExp.firstMatch(formattedString);
+
+    if (match == null) return 0;
+
+    final value = double.parse(match.group(1)!);
+    final unit = match.group(2)!.toUpperCase();
+
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+    final exponent = units.indexOf(unit);
+
+    if (exponent == -1) return 0;
+
+    return (value * pow(1024, exponent)).round();
   }
 }
