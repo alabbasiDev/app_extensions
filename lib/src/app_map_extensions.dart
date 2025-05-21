@@ -92,7 +92,11 @@ extension DeepSearchMap on Map<String, dynamic>? {
     }
     for (final value in data.values) {
       // If the value is a map, check it recursively
-      if (value.deepContainsKey(targetKey)) {
+      if (value is Map<String, dynamic> && value.deepContainsKey(targetKey)) {
+        return true;
+      }
+      if (value is List<Map<String, dynamic>> &&
+          value.deepContainsKey(targetKey)) {
         return true;
       }
     }
@@ -168,13 +172,13 @@ extension MapExtension2<K, V> on Map<K, V> {
     if (condition) addAll(values);
   }
 
-  void assign(K key, V val) {
-    clear();
-    this[key] = val;
-  }
+  // void assign(K key, V val) {
+  //   clear();
+  //   this[key] = val;
+  // }
 
-  void assignAll(Map<K, V> val) {
-    clear();
-    addAll(val);
-  }
+  // void assignAll(Map<K, V> val) {
+  //   clear();
+  //   addAll(val);
+  // }
 }
