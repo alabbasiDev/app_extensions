@@ -48,6 +48,26 @@ extension AppStringsExtention on String? {
     return DateTime.tryParse(this!);
   }
 
+  TimeOfDay? get toTimeOfDay {
+
+    if(isNullOrEmpty){
+      return null;
+    }
+
+    // Split the string by the colon ':'
+    List<String> parts = this!.split(':');
+
+    // Parse the hour and minute from the parts
+    // int.parse() converts a string to an integer
+    int hour = int.parse(parts[0]);
+    int minute = int.parse(parts[1]);
+
+    // Create a TimeOfDay object
+    TimeOfDay timeOfDay = TimeOfDay(hour: hour, minute: minute);
+    return timeOfDay;
+
+  }
+
   //region Date and Time
   // DateTime? get parseTimeFromStringToDateTime {
   //   if (isNullOrEmpty) {
