@@ -40,6 +40,14 @@ extension AppStringsExtention on String? {
     );
   }
 
+  DateTime? get toDateTime {
+    if (isNullOrEmpty) {
+      return null;
+    }
+
+    return DateTime.tryParse(this!);
+  }
+
   //region Date and Time
   // DateTime? get parseTimeFromStringToDateTime {
   //   if (isNullOrEmpty) {
