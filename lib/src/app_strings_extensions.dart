@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:convert/convert.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart' as intl;
-import 'dart:math';
 
 extension AppStringsExtention on String? {
   String get locale => intl.Intl.getCurrentLocale().split('_').first;
@@ -40,17 +40,18 @@ extension AppStringsExtention on String? {
     );
   }
 
-  DateTime? get toDateTime {
+  DateTime? toDateTime({intl.DateFormat? format}) {
     if (isNullOrEmpty) {
       return null;
     }
-
+    if (format != null) {
+      return format.parse(this!);
+    }
     return DateTime.tryParse(this!);
   }
 
   TimeOfDay? get toTimeOfDay {
-
-    if(isNullOrEmpty){
+    if (isNullOrEmpty) {
       return null;
     }
 
@@ -65,7 +66,6 @@ extension AppStringsExtention on String? {
     // Create a TimeOfDay object
     TimeOfDay timeOfDay = TimeOfDay(hour: hour, minute: minute);
     return timeOfDay;
-
   }
 
   //region Date and Time
@@ -272,7 +272,6 @@ extension AppStringsExtention on String? {
   // Usage:
   // print(parseFormattedBytes('2.5 GB')); //=>  2684354560
   int get parseFormattedBytes {
-
     if (isNullOrEmpty) return 0;
 
     String formattedString = this!.trim();
