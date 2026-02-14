@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:convert/convert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,87 +38,6 @@ extension AppStringsExtention on String? {
       fontSize: fontSize ?? 16.0,
     );
   }
-
-  DateTime? toDateTime({intl.DateFormat? format}) {
-    if (isNullOrEmpty) {
-      return null;
-    }
-    if (format != null) {
-      return format.parse(this!);
-    }
-    return DateTime.tryParse(this!);
-  }
-
-  TimeOfDay? get toTimeOfDay {
-    if (isNullOrEmpty) {
-      return null;
-    }
-
-    // Split the string by the colon ':'
-    List<String> parts = this!.split(':');
-
-    // Parse the hour and minute from the parts
-    // int.parse() converts a string to an integer
-    int hour = int.parse(parts[0]);
-    int minute = int.parse(parts[1]);
-
-    // Create a TimeOfDay object
-    TimeOfDay timeOfDay = TimeOfDay(hour: hour, minute: minute);
-    return timeOfDay;
-  }
-
-  //region Date and Time
-  // DateTime? get parseTimeFromStringToDateTime {
-  //   if (isNullOrEmpty) {
-  //     return null;
-  //   } else {
-  //     DateTime dateTime =
-  //     intl.DateFormat(apiTimeOfDayFormat, 'en').parse(this!);
-  //     return dateTime;
-  //   }
-  // }
-
-  // //TODO remove and palce it with
-  // TimeOfDay? get toTimeOfDay {
-  //   if (isNotNullOrEmpty) {
-  //     return TimeOfDay.fromDateTime(
-  //       parseTimeFromStringToDateTime!,
-  //     );
-  //   }
-  //   return null;
-  // }
-
-  DateTime? get fixToDateTime {
-    if (isNullOrEmpty) {
-      return null;
-    }
-    return FixedDateTimeFormatter('YYYYMMDD').decode(this!);
-  }
-
-  TimeOfDay? get from12hTo24hTimeOfDay {
-    if (isNotNullOrEmpty) {
-      assert(
-          this!.contains('AM') ||
-              this!.contains('am') ||
-              this!.contains('PM') ||
-              this!.contains('pm'),
-          'must contain AM or PM');
-      bool withSeconds = this!.split(':').length == 3;
-
-      DateTime date2 = intl.DateFormat(withSeconds ? "hh:mm:ssa" : "hh:mma")
-          .parse(this!
-              .replaceAll(' ', '')
-              .replaceAll('am', 'AM')
-              .replaceAll('pm', 'PM'));
-      // return TimeOfDay.fromDateTime(intl.DateFormat("HH:mm").format(date2));
-      return TimeOfDay.fromDateTime(date2);
-    }
-    return null;
-  }
-
-  // String? get timeOfDayToApi => isNullOrEmpty ? null : '$this:00';
-
-  //endregion
 
   //region text direction
   TextDirection get getTextDirection {

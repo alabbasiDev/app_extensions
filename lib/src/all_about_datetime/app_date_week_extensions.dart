@@ -1,7 +1,9 @@
 import 'package:intl/intl.dart' as intl;
 
-
 extension DateWeekExtensions on DateTime {
+  String get locale =>
+      intl.Intl.getCurrentLocale().split('_').first;
+
   /// The ISO 8601 week of year [1..53].
   /// Algorithm from https://en.wikipedia.org/wiki/ISO_week_date#Algorithms
   int get weekOfYear {
@@ -42,8 +44,14 @@ extension DateWeekExtensions on DateTime {
 
   /// Calculates number of weeks for a given year as per https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
   int get numOfWeeks {
+    return numOfWeeksWithLocale(locale);
+  }
+
+  /// Calculates number of weeks for a given year with specified locale.
+  int numOfWeeksWithLocale(String locale) {
     DateTime dec28 = DateTime(year, 12, 28);
-    int dayOfDec28 = int.parse(intl.DateFormat("D").format(dec28));
+    int dayOfDec28 =
+        int.parse(intl.DateFormat("D", locale).format(dec28));
     return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
   }
 }
