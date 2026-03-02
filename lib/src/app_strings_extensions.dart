@@ -21,7 +21,7 @@ extension AppStringsExtention on String? {
     message.toastMessage();
   }
 
-  toastMessage({
+  void toastMessage({
     Color? backgroundColor,
     Color? textColor,
     ToastGravity? gravity,
