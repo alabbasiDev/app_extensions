@@ -5,6 +5,8 @@ export 'package:app_extensions/src/all_about_datetime/app_date_time_extension.da
 export 'package:app_extensions/src/all_about_datetime/app_date_week_extensions.dart';
 export 'package:app_extensions/src/all_about_datetime/app_time_of_day_extension.dart';
 export 'package:app_extensions/src/all_about_datetime/app_string_date_extensions.dart';
+export 'package:app_extensions/src/all_about_datetime/time_ago_extenstion/date_time_time_ago_extension.dart';
+export 'package:app_extensions/src/all_about_datetime/time_ago_extenstion/time_ago_formatter.dart';
 export 'package:app_extensions/src/app_list_extensions.dart';
 export 'package:app_extensions/src/app_strings_extensions.dart';
 export 'package:app_extensions/src/app_widget_extensions.dart';
