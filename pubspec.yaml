@@ -16,7 +16,7 @@ dependencies:
   convert: ^3.1.2
   mime: ^2.0.0
   path: ^1.9.1
-  fluttertoast: ^9.0.0
+  fluttertoast: ^9.1.0
 
 
 

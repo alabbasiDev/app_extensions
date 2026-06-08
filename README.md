@@ -13,3 +13,19 @@ For help getting started with Flutter development, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Usage
+
+### Date Extensions
+
+To use the date extensions (e.g., `toDateYMD`), you must initialize the date formatting for your desired locale(s) in your `main()` function:
+
+```dart
+import 'package:intl/date_symbol_data_local.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('en');
+  runApp(const MyApp());
+}
+```
+
