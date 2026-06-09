@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'dart:math';
 
 extension NumExtension on num? {
-  //converts number to short form like 1K, 1M, 1B, etc.
+  //Converts number to short form like 1K, 1M, 1B, etc.
   String? get toShortForm {
     if (this == null) {
       return null;
